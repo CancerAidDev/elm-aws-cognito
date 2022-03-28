@@ -1,8 +1,9 @@
-**Contacts for Support**
-- @rupertlssmith on https://elmlang.slack.com
-- @rupert on https://discourse.elm-lang.org
-
 # elm-aws-cognito
+
+**This is a Fork** from [the-sett/elm-aws-cognito](https://github.com/the-sett/elm-aws-cognito).
+It uses our fork of [elm-aws-core](https://github.com/CancerAidDev/elm-aws-core).
+
+---
 
 This is a set of client side stubs for using the AWS Cognito services, which are used for managing user identities on AWS.
 

@@ -67,7 +67,7 @@ For more information see `Amazon Cognito Federated Identities`.
 import AWS.Config
 import AWS.Http
 import AWS.Service
-import Codec exposing (Codec, decoder)
+import Codec exposing (Codec)
 import Dict exposing (Dict)
 import Enum exposing (Enum)
 import Json.Decode exposing (Decoder, Value)

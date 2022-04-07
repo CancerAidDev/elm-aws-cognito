@@ -66,7 +66,6 @@ For more information see `Amazon Cognito Federated Identities`.
 
 import AWS.Config
 import AWS.Http
-import AWS.KVDecode exposing (KVDecoder)
 import AWS.Service
 import Codec exposing (Codec)
 import Dict exposing (Dict)
@@ -75,6 +74,7 @@ import Json.Decode exposing (Decoder, Value)
 import Json.Decode.Pipeline as Pipeline
 import Json.Encode exposing (Value)
 import Json.Encode.Optional as EncodeOpt
+import Time
 
 
 {-| Configuration for this service.
@@ -1296,7 +1296,7 @@ type alias DeleteIdentitiesInput =
 {-| The Credentials data model.
 -}
 type alias Credentials =
-    { accessKeyId : Maybe String, expiration : Maybe String, secretKey : Maybe String, sessionToken : Maybe String }
+    { accessKeyId : Maybe String, expiration : Maybe Time.Posix, secretKey : Maybe String, sessionToken : Maybe String }
 
 
 {-| The CreateIdentityPoolInput data model.
@@ -1379,7 +1379,7 @@ credentialsDecoder : Decoder Credentials
 credentialsDecoder =
     Json.Decode.succeed Credentials
         |> Pipeline.optional "AccessKeyId" (Json.Decode.maybe Json.Decode.string) Nothing
-        |> Pipeline.optional "Expiration" (Json.Decode.maybe Json.Decode.string) Nothing
+        |> Pipeline.optional "Expiration" (Json.Decode.maybe timestampDecoder) Nothing
         |> Pipeline.optional "SecretKey" (Json.Decode.maybe Json.Decode.string) Nothing
         |> Pipeline.optional "SessionToken" (Json.Decode.maybe Json.Decode.string) Nothing
 
@@ -1567,3 +1567,14 @@ unprocessedIdentityIdDecoder =
 unprocessedIdentityIdListDecoder : Decoder UnprocessedIdentityIdList
 unprocessedIdentityIdListDecoder =
     Json.Decode.list unprocessedIdentityIdDecoder
+
+
+{-| Decoder for timestamp.
+-}
+timestampDecoder : Decoder Time.Posix
+timestampDecoder =
+    Json.Decode.int
+        |> Json.Decode.map
+            (\timeInSeconds ->
+                Time.millisToPosix (timeInSeconds * 1000)
+            )
